@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/workflow/contracts/v1/artifact-version.schema.json",
+  "title": "Artifact version",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "version",
+    "kind",
+    "path",
+    "content_hash",
+    "created_by_attempt",
+    "input_artifacts",
+    "validation_status"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "dataset",
+        "problem_source",
+        "problem_analysis",
+        "modeling_report",
+        "model_spec",
+        "code",
+        "execution_log",
+        "result",
+        "figure",
+        "verification_report",
+        "report",
+        "paper",
+        "other"
+      ]
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_by_attempt": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "input_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+      }
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "passed",
+        "passed_with_warnings",
+        "failed",
+        "needs_review",
+        "expired"
+      ]
+    }
+  }
+}

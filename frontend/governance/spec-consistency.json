@@ -1,0 +1,21 @@
+{
+  "pathReferences": {
+    "documentRoots": ["docs"],
+    "extraDocuments": ["README.md"],
+    "resolveRoots": ["", "docs", "docs/standards"],
+    "ignoreGlobs": [],
+    "prescriptiveLinePattern": "(禁止新建|禁止创建|禁止出现|尚不存在)",
+    "quotePattern": "[「『]([^「『」』]+)[」』]",
+    "identifierPattern": "\\b[A-Z]-\\d{2}\\b",
+    "claimWindow": 12,
+    "unverifiedPolicy": "fail"
+  },
+  "ruleMarkers": {
+    "documentRoots": ["docs/standards"],
+    "modalPattern": "(必须|禁止|应当|可以|\\bMUST\\b|\\bMUST NOT\\b|\\bSHALL\\b|\\bSHOULD\\b|\\bMAY\\b)",
+    "markerPattern": "\\[\\[(machine|review|owner|task)\\]\\]",
+    "openingSection": "适用范围",
+    "closingSection": "变更影响",
+    "excludeTableRows": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "upstream": "https://github.com/openai/codex.git",
+  "baseline_commit": "9e22e74e8dcab53f8bf1799c0eed1f9834c32f1a",
+  "checkout": "codex-runtime",
+  "toolchain": "1.95.0",
+  "package": "codex-cli",
+  "binary": "codex",
+  "development_branch": "codex/math-agent-runtime",
+  "upstream_tree": "9050fe9e982cdb042f707ee3169046b8e0cf9382",
+  "layout": "monorepo-source-snapshot"
+}

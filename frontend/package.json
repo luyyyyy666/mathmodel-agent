@@ -1,0 +1,32 @@
+{
+  "name": "mathmodel-agent-frontend",
+  "version": "0.1.0",
+  "description": "Frontend base repository - the governance gates, the standards they enforce, and the written boundary against the back-end side. No business code yet.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.19.0"
+  },
+  "dependencies": {},
+  "files": [
+    "MANIFEST.json",
+    "README.md",
+    "docs",
+    "governance",
+    "lib",
+    "tests",
+    "tools"
+  ],
+  "scripts": {
+    "verify": "npm run build:content-manifest:check && npm run verify:spec-consistency && npm run verify:doc-facts && npm run verify:test-coverage-policy && npm run verify:gate-baselines",
+    "verify:doc-facts": "node tools/verify-doc-facts.mjs",
+    "verify:doc-facts:write": "node tools/verify-doc-facts.mjs --write",
+    "verify:spec-consistency": "node tools/verify-spec-consistency.mjs",
+    "verify:test-coverage-policy": "node tools/verify-test-coverage-policy.mjs",
+    "verify:gate-baselines": "node tools/verify-gate-baselines.mjs",
+    "verify:format": "npx --yes prettier@3.6.2 --check .",
+    "build:content-manifest": "node tools/build-content-manifest.mjs --write",
+    "build:content-manifest:check": "node tools/build-content-manifest.mjs --check",
+    "test": "node --test \"tests/**/*.test.mjs\""
+  },
+  "private": true
+}

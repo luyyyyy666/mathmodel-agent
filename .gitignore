@@ -1,0 +1,9 @@
+.runtime/
+**/node_modules/
+**/target/
+.DS_Store
+.env
+.env.local
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

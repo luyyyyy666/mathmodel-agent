@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-09-17T08:35:36.055Z",
+  "source_commit": "9e22e74e8dcab53f8bf1799c0eed1f9834c32f1a",
+  "binary_sha256": "5fa7d0b1dbc935ffe1c23e4a30c00a1c4cd4ca8938ef879bcc33f7ca6869a589",
+  "result": "passed",
+  "model_transport": "local HTTP fixture",
+  "external_model_calls": 0,
+  "saved_history_read": "passed",
+  "cancellation": "passed",
+  "scope": "HTTP command -> SQLite -> source Codex -> local mock model -> human review",
+  "backend_tests": {
+    "passed": 65,
+    "failed": 0
+  },
+  "frontend_foundation_tests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "module_gates": {
+    "backend": "passed",
+    "frontend": "passed"
+  },
+  "runtime_validation_note": "Imported source tree is identical to upstream_tree; integration exercised the previously built binary for that exact source with this monorepo backend.",
+  "source_tree": "9050fe9e982cdb042f707ee3169046b8e0cf9382",
+  "rerun": [
+    "npm test",
+    "npm run verify",
+    "node scripts/build-runtime.mjs",
+    "node scripts/check-runtime.mjs"
+  ]
+}

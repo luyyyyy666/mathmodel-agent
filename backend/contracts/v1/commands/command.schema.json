@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/workflow/contracts/v1/commands/command.schema.json",
+  "title": "Workflow command",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command",
+        "idempotency_key",
+        "project_id",
+        "template_version",
+        "input_version",
+        "input_artifacts"
+      ],
+      "properties": {
+        "command": { "const": "create_run" },
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "project_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "template_version": {
+          "type": "string",
+          "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"
+        },
+        "input_version": {
+          "type": "string",
+          "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"
+        },
+        "input_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command",
+        "idempotency_key",
+        "run_id",
+        "checkpoint_id",
+        "action"
+      ],
+      "properties": {
+        "command": { "const": "approve_checkpoint" },
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "action": {
+          "type": "string",
+          "enum": ["approve", "request_changes", "retry", "continue", "cancel"]
+        },
+        "comment": { "type": "string", "maxLength": 4000 }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "idempotency_key", "run_id", "step_id"],
+      "properties": {
+        "command": { "const": "retry_step" },
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "step_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "reason": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "idempotency_key", "run_id"],
+      "properties": {
+        "command": { "const": "cancel_run" },
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "reason": { "type": "string", "maxLength": 2000 }
+      }
+    }
+  ]
+}

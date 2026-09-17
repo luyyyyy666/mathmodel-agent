@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/workflow/contracts/v1/event-envelope.schema.json",
+  "title": "Workflow event envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "event_id",
+    "run_id",
+    "sequence",
+    "type",
+    "created_at",
+    "payload"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "run.created",
+        "run.status_changed",
+        "step.started",
+        "step.progress",
+        "step.waiting_checkpoint",
+        "step.completed",
+        "step.failed",
+        "artifact.created",
+        "artifact.expired",
+        "verification.completed",
+        "run.cancelled"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "step_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "step_name": {
+          "type": "string",
+          "enum": [
+            "problem_analysis",
+            "modeling",
+            "code_execution",
+            "result_verification",
+            "visualization",
+            "reporting"
+          ]
+        },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "running",
+            "paused",
+            "waiting_checkpoint",
+            "completed",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "progress": { "type": "number", "minimum": 0, "maximum": 1 },
+        "message": { "type": "string", "maxLength": 4000 },
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "artifact_version": { "type": "integer", "minimum": 1 },
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "passed",
+            "passed_with_warnings",
+            "failed",
+            "needs_review",
+            "expired"
+          ]
+        },
+        "error": { "$ref": "error.schema.json" },
+        "details": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "missing_sequence_from": { "type": "integer", "minimum": 1 },
+            "missing_sequence_to": { "type": "integer", "minimum": 1 },
+            "reason": { "type": "string", "maxLength": 1000 }
+          }
+        }
+      }
+    }
+  }
+}

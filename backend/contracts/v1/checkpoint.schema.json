@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/workflow/contracts/v1/checkpoint.schema.json",
+  "title": "Workflow checkpoint",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "checkpoint_id",
+    "run_id",
+    "step_id",
+    "kind",
+    "status",
+    "allowed_actions",
+    "payload",
+    "resolved_action"
+  ],
+  "properties": {
+    "checkpoint_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "step_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["model_approval", "execution_approval", "final_review"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "resolved", "expired", "cancelled"]
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["approve", "request_changes", "retry", "continue", "cancel"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "message": { "type": "string", "maxLength": 4000 },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          }
+        },
+        "requested_changes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+        },
+        "execution_budget_seconds": { "type": "integer", "minimum": 1 },
+        "network_access": { "type": "boolean" }
+      }
+    },
+    "resolved_action": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["approve", "request_changes", "retry", "continue", "cancel"]
+        },
+        { "type": "null" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    # Governance tools use node: builtins. Application tests use locked npm dependencies.
+    # The matrix floor is the version engines.node declares, so a green run
+    # here is evidence for that declaration rather than a claim about it.
+    name: offline gates (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["24.19.0", "24.x"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: content manifest matches the tree byte for byte
+        run: node tools/build-content-manifest.mjs --check
+      - name: specification self-consistency
+        run: node tools/verify-spec-consistency.mjs
+      - name: documented facts equal their source commands
+        run: node tools/verify-doc-facts.mjs
+      - name: test-coverage policy
+        run: node tools/verify-test-coverage-policy.mjs
+      - name: install locked application dependencies
+        run: npm ci --ignore-scripts
+      - name: unit tests
+        run: node --test "tests/**/*.test.mjs"
+
+  networked:
+    # Separated because it reaches the npm registry: a registry outage must not
+    # be able to turn the five offline gates above red.
+    name: formatting and baseline ratchet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+      - name: formatting
+        run: npx --yes prettier@3.6.2 --check .
+      - name: baseline ratchet (format, long-lines, cross-side)
+        run: node tools/verify-gate-baselines.mjs

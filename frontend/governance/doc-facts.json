@@ -1,0 +1,38 @@
+{
+  "onProbeError": "fail",
+  "maxWriteRounds": 6,
+  "probes": [
+    {
+      "id": "kit.docs",
+      "description": "规范文档份数。只读命令。",
+      "command": ["sh", "-c", "ls docs/standards/*.md | wc -l"]
+    },
+    {
+      "id": "kit.tools",
+      "description": "tools/ 下工具个数。只读命令。",
+      "command": ["sh", "-c", "ls tools/*.mjs | wc -l"]
+    },
+    {
+      "id": "kit.docBytes",
+      "description": "规范目录总字节数。自指量：写入这个值会改变这个值，写入模式的不动点循环因此存在。只读命令。",
+      "command": ["sh", "-c", "cat docs/standards/*.md | wc -c"]
+    }
+  ],
+  "anchors": [
+    {
+      "file": "docs/standards/05-DOCUMENTATION.md",
+      "occurrences": 1,
+      "template": "规范文档 {kit.docs} 份"
+    },
+    {
+      "file": "docs/standards/05-DOCUMENTATION.md",
+      "occurrences": 1,
+      "template": "门禁工具 {kit.tools} 个"
+    },
+    {
+      "file": "docs/standards/05-DOCUMENTATION.md",
+      "occurrences": 1,
+      "template": "合计 {kit.docBytes} 字节"
+    }
+  ]
+}

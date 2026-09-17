@@ -1,0 +1,12 @@
+{
+  "name": "mathmodel-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "数学建模 Agent：前后端与 Codex 源码统一仓库",
+  "scripts": {
+    "test": "npm --prefix backend test && npm --prefix frontend test",
+    "verify": "npm --prefix backend run verify && npm --prefix frontend run verify",
+    "build:runtime": "node scripts/build-runtime.mjs",
+    "check:runtime": "node scripts/check-runtime.mjs"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "name": "mathmodel-agent-frontend",
+  "version": "0.1.0",
+  "algorithm": "sha256",
+  "selfExcluded": "MANIFEST.json",
+  "regenerate": "node tools/build-content-manifest.mjs --print",
+  "verify": "node tools/build-content-manifest.mjs --check",
+  "fileCount": 26,
+  "byteTotal": 118891,
+  "files": [
+    {
+      "path": ".github/workflows/gates.yml",
+      "bytes": 1652,
+      "sha256": "ff8b666ff04fcb6cdf09eed29a2e6ed5233555836782db64c807faaafd82a015"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 24,
+      "sha256": "6c7d15d2ab1a0b51ebcae7e88b9ad01f0713d0833bc2dbe8f3bcc7a81b66b344"
+    },
+    {
+      "path": "README.md",
+      "bytes": 555,
+      "sha256": "a89af26f22e9a108b9ac4a962b4abf74fce6a0a186b19627172ffb70a271b8c9"
+    },
+    {
+      "path": "docs/standards/00-PRINCIPLES.md",
+      "bytes": 3476,
+      "sha256": "79ab25045bf666b118688cd6a14e9c20e2335346e30e4ad278c53cee574bfdc0"
+    },
+    {
+      "path": "docs/standards/01-REPOSITORY-LAYOUT.md",
+      "bytes": 3079,
+      "sha256": "6e611dde8d6ca66ad235aa4724cc4e0deb4016b452b2c4b608c1e6475bacef76"
+    },
+    {
+      "path": "docs/standards/02-NAMING-CONTRACT.md",
+      "bytes": 2698,
+      "sha256": "06709ac1f2728aeb912829b0545b30e1069c60a80d98b9834405a2a965549907"
+    },
+    {
+      "path": "docs/standards/03-TOOL-SHAPE.md",
+      "bytes": 3759,
+      "sha256": "8df43f281b174900aade3e931f29363f95bcbe7b1c20249c7b08e250a933f26e"
+    },
+    {
+      "path": "docs/standards/04-TESTING-POLICY.md",
+      "bytes": 2901,
+      "sha256": "70c11c79bf328acf9a1d2e9e84bd7b3987bf3592826b5bc0b3ef19dbe31ff8f9"
+    },
+    {
+      "path": "docs/standards/05-DOCUMENTATION.md",
+      "bytes": 5746,
+      "sha256": "6af994d91cbd61afb72b6dcbd510cff15df73263c6d459784a776ce5d2d74ea9"
+    },
+    {
+      "path": "docs/standards/06-ADR-GOVERNANCE.md",
+      "bytes": 4028,
+      "sha256": "1409e4be785a69f9dfd3ff413f9aacbb9a1646ff5f02e83b2e151bf19ea397ba"
+    },
+    {
+      "path": "docs/standards/07-BASELINE-RATCHET.md",
+      "bytes": 3218,
+      "sha256": "52e677087102370d6f4ea94aa9f59711a8413751c63c0f8981a5b074a22ec2bd"
+    },
+    {
+      "path": "docs/standards/08-BOUNDARY.md",
+      "bytes": 1423,
+      "sha256": "a96bed043aa23b4237bac1ce0063ac4902308e62e8255128efa7964a5a9bcc18"
+    },
+    {
+      "path": "governance/doc-facts.json",
+      "bytes": 1089,
+      "sha256": "84c341c8cc840cbed5641683830c97e232d23c76e04f1b18543f3e620ee94bb3"
+    },
+    {
+      "path": "governance/gate-baselines.json",
+      "bytes": 3299,
+      "sha256": "4667f240256d46869a5451826be9534f89383192d69d918a1820bb323b94a0b0"
+    },
+    {
+      "path": "governance/spec-consistency.json",
+      "bytes": 769,
+      "sha256": "4cc7d2038cc6ef0b78d145541d4c68534831cbb63894e07b108fa6247222c254"
+    },
+    {
+      "path": "governance/test-coverage.json",
+      "bytes": 694,
+      "sha256": "ad7b4c2537a3327ebc7bdc1aa627f7daf3402aa4eea0d9e5bf7fa6fdac5b84c5"
+    },
+    {
+      "path": "lib/kit.mjs",
+      "bytes": 7900,
+      "sha256": "f1cd322e8bd53d344cc6708bca5f3a330685f4df80fd58d40d7faa91c6ead604"
+    },
+    {
+      "path": "lib/markdown.mjs",
+      "bytes": 3897,
+      "sha256": "73753af7647552b1c0d0b2b927a2a0891d3c4f4a53b08cf34ec346438eb1b13b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1298,
+      "sha256": "a66453efd7f9e70df68f9fff05b127baa8923878c37331b415c8ab8eb0858401"
+    },
+    {
+      "path": "tests/lib/kit.test.mjs",
+      "bytes": 2604,
+      "sha256": "8e06048b33678214c75f58bff9b9b4726480b0250aea77d3363d46b8a4d91631"
+    },
+    {
+      "path": "tests/lib/markdown.test.mjs",
+      "bytes": 2240,
+      "sha256": "b0c9cde694e87225b65c03fbd7b6fa6ce7de14917524aa3a9c71593edf9abb6c"
+    },
+    {
+      "path": "tools/build-content-manifest.mjs",
+      "bytes": 7035,
+      "sha256": "32d51e235e94a7116ebe183a01602c01fc292d52999173cbe72fd2f81a6855b7"
+    },
+    {
+      "path": "tools/verify-doc-facts.mjs",
+      "bytes": 16477,
+      "sha256": "d870d178f84655e5f3eab5d2243581377001899a578f8cb1049235f2a20c33c3"
+    },
+    {
+      "path": "tools/verify-gate-baselines.mjs",
+      "bytes": 9788,
+      "sha256": "f2f6290c052be7a65a1dace1a976e0a47d5bd0bb34745419d27cbba30e3e7d15"
+    },
+    {
+      "path": "tools/verify-spec-consistency.mjs",
+      "bytes": 20208,
+      "sha256": "30c713bf218b8190f7f4f060a91ca169b170fef7b5066b9fa8ba8088f965cfb0"
+    },
+    {
+      "path": "tools/verify-test-coverage-policy.mjs",
+      "bytes": 9034,
+      "sha256": "7ff520a279f249eb40a163476f9fd2b3e74eb657ee69a537bc475b3b01d9cf33"
+    }
+  ]
+}

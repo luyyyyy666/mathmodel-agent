@@ -1,0 +1,16 @@
+{
+  "sourceRoots": ["lib", "tools", "client"],
+  "sourceExtensions": [".mjs"],
+  "testRoot": "tests",
+  "testSuffix": ".test.mjs",
+  "ignoreGlobs": [],
+  "alternateCriteriaForbidTests": false,
+  "alternateCriteria": [
+    {
+      "id": "gate-injection",
+      "paths": ["tools/**"],
+      "reason": "门禁工具由注入实验整体判定，见 docs/standards/04-TESTING-POLICY.md 的 Q-07：制造一处违规，断言非零退出码与它指名的位置，还原，断言 0。一道门禁的正确性就是它的退出码，逐文件单测只能断言它的内部结构，而内部结构可以全对而退出码全错。",
+      "evidence": "docs/standards/04-TESTING-POLICY.md"
+    }
+  ]
+}

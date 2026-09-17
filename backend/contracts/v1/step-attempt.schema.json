@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/workflow/contracts/v1/step-attempt.schema.json",
+  "title": "Workflow step attempt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "step_id",
+    "step_name",
+    "attempt",
+    "status",
+    "executor",
+    "input_artifacts",
+    "output_artifacts",
+    "started_at",
+    "completed_at",
+    "error"
+  ],
+  "properties": {
+    "step_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "step_name": {
+      "type": "string",
+      "enum": [
+        "problem_analysis",
+        "modeling",
+        "code_execution",
+        "result_verification",
+        "visualization",
+        "reporting"
+      ]
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "running", "completed", "failed", "cancelled"]
+    },
+    "executor": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "input_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+      }
+    },
+    "output_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "completed_at": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+        },
+        { "type": "null" }
+      ]
+    },
+    "error": {
+      "oneOf": [{ "$ref": "error.schema.json" }, { "type": "null" }]
+    }
+  }
+}

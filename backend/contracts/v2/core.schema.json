@@ -1,0 +1,595 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/mathmodel-agent/v2/core.schema.json",
+  "title": "Mathmodel Agent modeling task core v2",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "prompt", "acceptance_criteria"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16000
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 20,
+          "minItems": 1
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_id", "name", "created_at"],
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "created_at": {
+          "$ref": "#/$defs/time"
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "attempt",
+        "kind",
+        "request_id",
+        "generation",
+        "status",
+        "details",
+        "created_at"
+      ],
+      "properties": {
+        "approval_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "enum": ["command", "file_change"]
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "status": {
+          "enum": ["pending", "accepted", "declined", "expired"]
+        },
+        "details": {
+          "type": "object"
+        },
+        "created_at": {
+          "$ref": "#/$defs/time"
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt",
+        "thread_id",
+        "turn_id",
+        "status",
+        "result",
+        "error",
+        "created_at",
+        "finished_at"
+      ],
+      "properties": {
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "thread_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "turn_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "starting",
+            "running",
+            "awaiting_review",
+            "completed",
+            "failed",
+            "cancelled",
+            "recovery_required",
+            "rejected"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "maxLength": 1000000
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/time"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "run_id",
+        "project_id",
+        "task",
+        "status",
+        "state_version",
+        "last_sequence",
+        "attempts",
+        "approvals",
+        "review",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "v2"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "project_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "task": {
+          "$ref": "#/$defs/task"
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "queued",
+            "starting",
+            "running",
+            "waiting_approval",
+            "awaiting_review",
+            "completed",
+            "failed",
+            "cancelling",
+            "cancelled",
+            "recovery_required"
+          ]
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "last_sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "attempts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attempt"
+          },
+          "maxItems": 1000
+        },
+        "approvals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/approval"
+          },
+          "maxItems": 1000
+        },
+        "review": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["decision", "comment", "at"],
+              "properties": {
+                "decision": {
+                  "enum": ["accept", "reject"]
+                },
+                "comment": {
+                  "type": "string",
+                  "maxLength": 4000
+                },
+                "at": {
+                  "$ref": "#/$defs/time"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/time"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/time"
+        }
+      }
+    },
+    "command": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["command", "idempotency_key", "name"],
+          "properties": {
+            "command": {
+              "const": "create_project"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["command", "idempotency_key", "project_id", "task"],
+          "properties": {
+            "command": {
+              "const": "create_run"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "project_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "task": {
+              "$ref": "#/$defs/task"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "idempotency_key",
+            "run_id",
+            "expected_version"
+          ],
+          "properties": {
+            "command": {
+              "const": "start_run"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "run_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "expected_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "idempotency_key",
+            "run_id",
+            "expected_version"
+          ],
+          "properties": {
+            "command": {
+              "const": "cancel_run"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "run_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "expected_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "idempotency_key",
+            "run_id",
+            "expected_version"
+          ],
+          "properties": {
+            "command": {
+              "const": "retry_run"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "run_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "expected_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "idempotency_key",
+            "run_id",
+            "expected_version"
+          ],
+          "properties": {
+            "command": {
+              "const": "reconcile_run"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "run_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "expected_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "idempotency_key",
+            "run_id",
+            "expected_version",
+            "approval_id",
+            "decision"
+          ],
+          "properties": {
+            "command": {
+              "const": "resolve_approval"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "run_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "expected_version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "approval_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "decision": {
+              "enum": ["accept", "decline"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "idempotency_key",
+            "run_id",
+            "expected_version",
+            "decision",
+            "comment"
+          ],
+          "properties": {
+            "command": {
+              "const": "review_run"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "run_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "expected_version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "decision": {
+              "enum": ["accept", "reject"]
+            },
+            "comment": {
+              "type": "string",
+              "maxLength": 4000
+            }
+          }
+        }
+      ]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "run_id",
+        "sequence",
+        "state_version",
+        "type",
+        "at",
+        "payload"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "v2"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "type": {
+          "enum": [
+            "run.created",
+            "run.queued",
+            "attempt.starting",
+            "runtime.bound",
+            "runtime.started",
+            "runtime.message",
+            "runtime.item",
+            "approval.requested",
+            "approval.resolved",
+            "run.cancelling",
+            "run.cancelled",
+            "run.failed",
+            "run.recovery_required",
+            "run.reconciled",
+            "run.awaiting_review",
+            "run.reviewed"
+          ]
+        },
+        "at": {
+          "$ref": "#/$defs/time"
+        },
+        "payload": {
+          "type": "object"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "enum": [
+            "invalid_request",
+            "not_found",
+            "conflict",
+            "runtime_unavailable",
+            "internal_error",
+            "forbidden"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    }
+  }
+}

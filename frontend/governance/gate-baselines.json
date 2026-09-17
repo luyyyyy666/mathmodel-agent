@@ -1,0 +1,67 @@
+{
+  "gates": [
+    {
+      "id": "format",
+      "description": "包裹 prettier --check。观测集合是格式不合规的文件路径，每个文件计 1。这道棘轮不替代 prettier，它只断言不合规的文件恰好是台账记录的那些。",
+      "command": ["npx", "--yes", "prettier@3.6.2", "--check", "."],
+      "acceptExitCodes": [0, 1],
+      "parse": {
+        "pattern": "^\\[warn\\] (.+)$",
+        "keyGroup": 1,
+        "excludePattern": "Code style issues|Checking formatting"
+      },
+      "entries": []
+    },
+    {
+      "id": "long-lines",
+      "description": "lib/ 与 tools/ 中长度超过 100 个字符的行，按文件计数。这是一条真实但轻量的债务台账，四个方向都能在它上面被观测到。",
+      "command": [
+        "sh",
+        "-c",
+        "awk 'length($0) > 100 { print FILENAME }' lib/*.mjs tools/*.mjs"
+      ],
+      "acceptExitCodes": [0],
+      "parse": {
+        "pattern": "^(\\S+)$",
+        "keyGroup": 1
+      },
+      "entries": [
+        {
+          "key": "tools/build-content-manifest.mjs",
+          "count": 8
+        },
+        {
+          "key": "tools/verify-doc-facts.mjs",
+          "count": 17
+        },
+        {
+          "key": "tools/verify-gate-baselines.mjs",
+          "count": 11
+        },
+        {
+          "key": "tools/verify-spec-consistency.mjs",
+          "count": 14
+        },
+        {
+          "key": "tools/verify-test-coverage-policy.mjs",
+          "count": 9
+        }
+      ]
+    },
+    {
+      "id": "cross-side",
+      "description": "包裹一条只读的边界扫描，落实 docs/standards/08-BOUNDARY.md 的 B-01 与 B-04。观测集合是本仓库里属于后端一侧的材料，键是命中的文件路径，路径命中每文件计 1，内容命中按命中行数累加。台账故意为空：本仓库不承认任何一处既有的后端材料，因此任何一次命中都落在 NEW 方向上并使门禁失败。命令分两段。第一段只看路径，把全部文件名与后端一侧的保留目录名、专有扩展名比对，因此它读不到任何文件内容，也就不会被本文件里写着的这条命令自己命中。第二段按内容扫描，跳过 docs/、governance/ 与 README.md：边界规范、门禁台账与仓库门面正是要写出对侧名字的三处地方，把它们纳入内容扫描会让这道门禁在写下自己的定义时自陷。退出码 1 是 grep 无命中的正常结局，故 acceptExitCodes 收 0 与 1；退出码 2 表示 grep 自身出错，它不在收表里，门禁会因此报错而不是静默通过。这道棘轮不替代它包裹的扫描，它只断言命中集合恰好等于台账记录的集合。",
+      "command": [
+        "sh",
+        "-c",
+        "find . \\( -name .git -o -name node_modules \\) -prune -o -type f -print | grep -E '^\\./(daemon|handlers|jobs|migrations|schema|server)/|\\.(proto|sql)$'; grep -rnE '\\.\\./backend/(server|lib|tools)/|(^|[^A-Za-z/])(daemon|handlers|jobs|migrations|schema|server)/' --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=docs --exclude-dir=governance --exclude=README.md ."
+      ],
+      "acceptExitCodes": [0, 1],
+      "parse": {
+        "pattern": "^\\./([^:\\n]+)",
+        "keyGroup": 1
+      },
+      "entries": []
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sweetcornna.dev/workflow/contracts/v1/error.schema.json",
+  "title": "Workflow error",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code", "message", "retryable", "details"],
+  "properties": {
+    "code": {
+      "type": "string",
+      "enum": [
+        "INVALID_INPUT",
+        "INVALID_STATE",
+        "NOT_FOUND",
+        "CONFLICT",
+        "IDEMPOTENCY_CONFLICT",
+        "VALIDATION_FAILED",
+        "EXECUTION_FAILED",
+        "TIMEOUT",
+        "CANCELLED",
+        "RESOURCE_LIMIT_EXCEEDED",
+        "UPSTREAM_UNAVAILABLE",
+        "INTERNAL"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "field": { "type": "string", "minLength": 1 },
+        "step_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "hint": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    }
+  }
+}
